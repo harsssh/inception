@@ -55,11 +55,11 @@ create_database() {
 main() {
   init_db
   run_temp_mariadb
-  if [ -n "$MARIADB_DATABASE" ]; then
-    create_database "$MARIADB_DATABASE"
+  if [ -n "$DB_DATABASE" ]; then
+    create_database "$DB_DATABASE"
   fi
-  if [ -n "$MARIADB_USER" ] && [ -n "$MARIADB_PASSWORD" ]; then
-    create_user "$MARIADB_USER" "$MARIADB_PASSWORD"
+  if [ -n "$DB_USER" ] && [ -n "$DB_PASSWORD" ]; then
+    create_user "$DB_USER" "$DB_PASSWORD"
   fi
   kill_temp_mariadb
 

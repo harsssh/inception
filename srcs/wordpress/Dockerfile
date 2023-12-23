@@ -22,16 +22,16 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
     mv wp-cli.phar /usr/local/bin/wp
 
 # Setup directories
-ENV WORDPRESS_DIR=/var/www/html
-RUN mkdir -p $WORDPRESS_DIR && \
-    chown -R www-data:www-data $WORDPRESS_DIR && \
-    chmod 755 $WORDPRESS_DIR
+ENV WP_DIR=/var/www/html
+RUN mkdir -p $WP_DIR && \
+    chown -R www-data:www-data $WP_DIR && \
+    chmod 755 $WP_DIR
 
 # Set working directory
-WORKDIR $WORDPRESS_DIR
+WORKDIR $WP_DIR
 
 # Download wordpress
-RUN su-exec www-data wp core download --path=$WORDPRESS_DIR
+RUN su-exec www-data wp core download --path=$WP_DIR
 
 # Copy config files
 #COPY ./conf/conf.d/opcache-recommended.ini /usr/local/etc/php/conf.d/
@@ -41,7 +41,7 @@ RUN su-exec www-data wp core download --path=$WORDPRESS_DIR
 COPY ./entrypoint.sh /usr/local/bin/
 
 # Volume
-VOLUME $WORDPRESS_DIR
+VOLUME $WP_DIR
 
 # Expose ports
 EXPOSE 9000
