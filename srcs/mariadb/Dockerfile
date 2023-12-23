@@ -9,9 +9,6 @@ RUN mkdir -p /var/lib/mysql /run/mysqld && \
     chown -R mysql:mysql /var/lib/mysql /run/mysqld && \
     chmod 1777 /run/mysqld
 
-# Copy config files
-COPY ./conf/my.cnf.d/mariadb-server.cnf /etc/my.cnf.d/
-
 # Copy entrypoint
 COPY ./entrypoint.sh /usr/local/bin/
 
