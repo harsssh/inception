@@ -13,9 +13,9 @@ services:
     ports:
       - "127.0.0.1:443:443"
     volumes:
-      - wp-data:/var/www/html
-      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/conf/http.d:/etc/nginx/http.d
+      - wp-data:/var/www/html:ro
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf/http.d:/etc/nginx/http.d:ro
   wordpress:
     container_name: wordpress
     build: ./wordpress
@@ -29,8 +29,8 @@ services:
       - backend
     volumes:
       - wp-data:/var/www/html
-      - ./wordpress/conf/conf.d/opcache-recommended.ini:/etc/php82/conf.d/opcache-recommended.ini
-      - ./wordpress/conf/php-fpm.d/www.conf:/etc/php82/php-fpm.d/www.conf
+      - ./wordpress/conf/conf.d/opcache-recommended.ini:/etc/php82/conf.d/opcache-recommended.ini:ro
+      - ./wordpress/conf/php-fpm.d/www.conf:/etc/php82/php-fpm.d/www.conf:ro
     healthcheck:
       test: SCRIPT_NAME=/ping SCRIPT_FILENAME=/ping REQUEST_METHOD=GET cgi-fcgi -bind -connect 127.0.0.1:9000 | grep -q pong
       interval: 5s
@@ -54,7 +54,7 @@ services:
       - backend
     volumes:
       - db-data:/var/lib/mysql
-      - ./mariadb/conf/my.cnf.d/mariadb-server.cnf:/etc/my.cnf.d/mariadb-server.cnf
+      - ./mariadb/conf/my.cnf.d/mariadb-server.cnf:/etc/my.cnf.d/mariadb-server.cnf:ro
     healthcheck:
       test: mysqladmin ping --silent -u $DB_USER -p$DB_PASSWORD
       interval: 5s
@@ -73,5 +73,13 @@ networks:
 volumes:
   wp-data:
     name: wp-data
+    driver_opts:
+      type: none
+      o: bind
+      device: ${VOL_WP_PATH:?}
   db-data:
     name: db-data
+    driver_opts:
+      type: none
+      o: bind
+      device: ${VOL_DB_PATH:?}
