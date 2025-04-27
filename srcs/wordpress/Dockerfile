@@ -35,10 +35,6 @@ WORKDIR $WP_DIR
 RUN su-exec www-data \
     php -d memory_limit=512M /usr/local/bin/wp core download --path=$WP_DIR
 
-# Copy config files
-#COPY ./conf/conf.d/opcache-recommended.ini /usr/local/etc/php/conf.d/
-#COPY ./conf/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/
-
 # Copy entrypoint.sh
 COPY ./entrypoint.sh /usr/local/bin/
 
